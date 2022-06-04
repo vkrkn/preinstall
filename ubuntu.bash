@@ -2,7 +2,7 @@
 cd ~/
 
 current_hostname=hostname
-ssh_port=$(cat /etc/ssh/sshd_config | grep "^Port" | awk ' { print $2}  ')
+ssh_port=$(cat /etc/ssh/sshd_config | grep "^#\?Port" | awk ' { print $2}  ')
 
 echo "Введите новый hostname, либо нажмите Enter чтоб оставить текущий [$($current_hostname)]:"
 read hostname
