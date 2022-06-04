@@ -37,3 +37,5 @@ systemctl stop snapd;apt remove --purge --assume-yes snapd;rm -rf ~/snap/;rm -rf
 timedatectl set-timezone Asia/Tashkent
 
 echo "Reboot required!"
+echo "Press enter to exit"
+read end
