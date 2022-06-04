@@ -29,12 +29,19 @@ sed -i 's/.DNSStubListener=yes/DNSStubListener=no' /etc/systemd/resolved.conf
 sed -i 's/.DNS=.*/DNS=8.8.8.8 1.1.1.1/' /etc/systemd/resolved.conf
 ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
-apt-get install --assume-yes ipset build-essential libpq-dev libxml2 libxml2-dev libxslt-dev bash-completion nmon atop iotop htop net-tools bridge-utils iptraf-ng rar unrar zip unzip pigz fail2ban
+apt-get install --assume-yes vim ipset build-essential libpq-dev libxml2 libxml2-dev libxslt-dev bash-completion nmon atop iotop htop net-tools bridge-utils iptraf-ng rar unrar zip unzip pigz fail2ban
+update-alternatives --set /usr/bin/vi
 sed -i '285a\enabled\t= true' /etc/fail2ban/jail.conf
 systemctl restart sshd; systemctl restart fail2ban
 ufw disble;apt remove --purge --assume-yes ufw
 systemctl stop snapd;apt remove --purge --assume-yes snapd;rm -rf ~/snap/;rm -rf /var/cache/snapd/ 
 timedatectl set-timezone Asia/Tashkent
+
+chmod 400 /etc/update-motd.d/88-esm-announce
+chmod 400 /etc/update-motd.d/91-contract-ua-esm-status
+chmod 400 /etc/update-motd.d/50-motd-news
+chmod 400 /etc/update-motd.d/10-help-text
+
 
 echo "Reboot required!"
 echo "Press enter to exit"
