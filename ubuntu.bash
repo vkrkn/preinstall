@@ -1,11 +1,14 @@
 #!/bin/bash
 cd ~/
 
-echo "Введите hostname:"
+current_hostname=hostname
+ssh_port=$(cat /etc/ssh/sshd_config | grep "^Port" | awk ' { print $2}  ')
+
+echo "Введите новый hostname, либо нажмите Enter чтоб оставить текущий [$($current_hostname)]:"
 read hostname
-echo "Введите ssh порт:"
+echo "Введите номер ssh порта, либо нажмите Enter чтоб оставить текущий [$ssh_port]:"
 read ssh_port
-echo "Вставьте свой публичный ключ:"
+echo "Вставьте свой публичный ключ, либо нажмите Enter чтоб продолжить:"
 read ssh_key
 
 if [[ "$hostname" != "" ]]; then
@@ -14,8 +17,10 @@ if [[ "$hostname" != "" ]]; then
   sed -i "s/127.0.1.1 .*/127.0.1.1 ${arrIN[0]} $hostname/" /etc/hosts
 fi
 
-if [[ "$ssh_port" != "" ]]; then
-  sed -i "s/#Port .*/Port $ssh_port/" /etc/ssh/sshd_config
+re="^[1-5]{1}[0-9]{1,4}$"
+if [[ "$ssh_port" != "" ]] && [[ $ssh_port =~ $re ]] ; then
+  sed -i "s/^#\?Port .*/Port $ssh_port/" /etc/ssh/sshd_config
+  sed -i "s/^ssh.*/ssh\t\t$ssh_port\/tcp/" /etc/services
 fi
 
 if [[ "$ssh_key" != "" ]]; then
@@ -31,8 +36,7 @@ ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
 apt-get install --assume-yes traceroute vim ipset build-essential libpq-dev libxml2 libxml2-dev libxslt-dev bash-completion nmon atop iotop htop net-tools bridge-utils iptraf-ng rar unrar zip unzip pigz fail2ban
 update-alternatives --set editor /usr/bin/vim.basic
-sed -i '285a\enabled\t= true' /etc/fail2ban/jail.conf
-systemctl restart sshd; systemctl restart fail2ban
+systemctl restart sshd;
 ufw disble;apt remove --purge --assume-yes ufw
 systemctl stop snapd;apt remove --purge --assume-yes snapd;rm -rf ~/snap/;rm -rf /var/cache/snapd/ 
 timedatectl set-timezone Asia/Tashkent
@@ -42,7 +46,14 @@ chmod 400 /etc/update-motd.d/91-contract-ua-esm-status
 chmod 400 /etc/update-motd.d/50-motd-news
 chmod 400 /etc/update-motd.d/10-help-text
 
+echo 'export HISTTIMEFORMAT="%h %d %H:%M:%S "' >> ~/.bashrc
+sed -i 's/HISTSIZE=.*/HISTSIZE=5000/' ~/.bashrc
+sed -i 's/HISTFILESIZE=.*/HISTFILESIZE=5000/' ~/.bashrc
+sed -i 's/HISTCONTROL.*//' ~/.bashrc
+echo "PROMPT_COMMAND='history -a'" >> ~/.bashrc
+source ~/.bashrc
 
+echo "===================================="
 echo "Reboot required!"
 echo "Press enter to exit"
 read end
