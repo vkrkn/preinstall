@@ -26,7 +26,7 @@ sed -i 's/.AddressFamily any/AddressFamily inet/' /etc/ssh/sshd_config
 sed -i 's/.PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 sed -i 's/X11Forwarding yes/X11Forwarding no/' /etc/ssh/sshd_config
 sed -i 's/.DNSStubListener=yes/DNSStubListener=no' /etc/systemd/resolved.conf
-sed -i 's/.DNS=/DNS=8.8.8.8 1.1.1.1/' /etc/systemd/resolved.conf
+sed -i 's/.DNS=.*/DNS=8.8.8.8 1.1.1.1/' /etc/systemd/resolved.conf
 ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 
 apt-get install --assume-yes ipset build-essential libpq-dev libxml2 libxml2-dev libxslt-dev bash-completion nmon atop iotop htop net-tools bridge-utils iptraf-ng rar unrar zip unzip pigz fail2ban
