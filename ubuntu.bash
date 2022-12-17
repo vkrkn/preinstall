@@ -4,7 +4,7 @@ cd ~/
 current_hostname=$(hostname)
 ssh_port=$(cat /etc/ssh/sshd_config | grep "^#\?Port" | awk ' { print $2}  ')
 
-read -p "Введите новый hostname, либо нажмите Enter чтоб оставить текущий [$($current_hostname)]: " hostname
+read -p "Введите новый hostname, либо нажмите Enter чтоб оставить текущий [$current_hostname]: " hostname
 read -p "Введите номер ssh порта, либо нажмите Enter чтоб оставить текущий [$ssh_port]: " ssh_port
 read -p "Вставьте свой публичный ключ, либо нажмите Enter чтоб продолжить: " ssh_key
 
