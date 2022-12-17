@@ -1,15 +1,12 @@
 #!/bin/bash
 cd ~/
 
-current_hostname=hostname
+current_hostname=$(hostname)
 ssh_port=$(cat /etc/ssh/sshd_config | grep "^#\?Port" | awk ' { print $2}  ')
 
-echo "Введите новый hostname, либо нажмите Enter чтоб оставить текущий [$($current_hostname)]:"
-read hostname
-echo "Введите номер ssh порта, либо нажмите Enter чтоб оставить текущий [$ssh_port]:"
-read ssh_port
-echo "Вставьте свой публичный ключ, либо нажмите Enter чтоб продолжить:"
-read ssh_key
+read -p "Введите новый hostname, либо нажмите Enter чтоб оставить текущий [$($current_hostname)]: " hostname
+read -p "Введите номер ssh порта, либо нажмите Enter чтоб оставить текущий [$ssh_port]: " ssh_port
+read -p "Вставьте свой публичный ключ, либо нажмите Enter чтоб продолжить: " ssh_key
 
 if [[ "$hostname" != "" ]]; then
   hostnamectl set-hostname $hostname
@@ -38,7 +35,7 @@ systemctl restart systemd-resolved.service
 apt-get install --assume-yes traceroute vim ipset build-essential libpq-dev libxml2 libxml2-dev libxslt-dev bash-completion nmon atop iotop htop net-tools bridge-utils iptraf-ng rar unrar zip unzip pigz fail2ban
 update-alternatives --set editor /usr/bin/vim.basic
 systemctl restart sshd;
-ufw disble;apt remove --purge --assume-yes ufw
+ufw disable;apt remove --purge --assume-yes ufw
 systemctl stop snapd;apt remove --purge --assume-yes snapd;rm -rf ~/snap/;rm -rf /var/cache/snapd/ 
 timedatectl set-timezone Asia/Tashkent
 
