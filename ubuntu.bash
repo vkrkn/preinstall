@@ -25,9 +25,8 @@ if [[ "$ssh_key" != "" ]]; then
 fi
 
 sed -i 's/.AddressFamily any/AddressFamily inet/' /etc/ssh/sshd_config
-sed -i 's/.PermitRootLogin prohibit-password/PermitRootLogin yes/' /etc/ssh/sshd_config
 sed -i 's/X11Forwarding yes/X11Forwarding no/' /etc/ssh/sshd_config
-sed -i 's/.DNSStubListener=yes/DNSStubListener=no' /etc/systemd/resolved.conf
+sed -i 's/.DNSStubListener=yes/DNSStubListener=no/' /etc/systemd/resolved.conf
 sed -i 's/.DNS=.*/#DNS=8.8.8.8 1.1.1.1/' /etc/systemd/resolved.conf
 ln -sf /run/systemd/resolve/resolv.conf /etc/resolv.conf
 systemctl restart systemd-resolved.service
